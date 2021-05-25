@@ -16,11 +16,11 @@ To run the sample scripts, you need:
 ## Set Up
 The scripts expect the following environment variables to be defined:
 
-* DEV_PROJECT_ID. The UID of the Smartling test project.
-* DEV_USER_IDENTIFIER. The user identifier from your API token.
-* DEV_USER_SECRET. The user secret from your API token.
+* **DEV_PROJECT_ID**. The UID of the Smartling test project.
+* **DEV_USER_IDENTIFIER**. The user identifier from your API token.
+* **DEV_USER_SECRET**. The user secret from your API token.
 
-To set these up, download a copy of the either setenv.sh (for Mac and Linux) or setenv.cmd (for Windows), update them with your own information, then run them in the terminal where you'll be running the scripts:
+To set these up, download a copy of the either setenv.sh (for Mac and Linux) or setenv.cmd (for Windows) from the root directory of the repo, update them with your own information, then run them in the terminal where you'll be running the scripts:
 
 Mac or Linux
 ```
