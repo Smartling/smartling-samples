@@ -1,6 +1,6 @@
 # HTML Context
 
-Sample scripts illustrating the various ways to associate HTML context with strings in Smartling using the context API:
+Sample scripts illustrating the various ways to associate HTML [context](https://help.smartling.com/hc/en-us/articles/360057484273-Overview-of-Visual-Context) with strings in Smartling using the context API:
 
 * **match-all.py**. Associates uploaded HTML context with any matching project string.
 *  **match-file-uri.py**. Associates uploaded HTML context with any matching strings from a previously uploaded file based on the file URI.

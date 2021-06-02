@@ -1,5 +1,5 @@
 # Getting Started Python scripts
-Python scripts illustrating topics from the ['Getting Started' tutorial](https://help.smartling.com/hc/en-us/articles/1260804661570-Getting-Started).
+Python scripts illustrating topics from the [Getting Started](https://help.smartling.com/hc/en-us/articles/1260804661570-Getting-Started) tutorial.
 
 The following scripts are included:
 
