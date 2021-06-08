@@ -1,34 +1,37 @@
+package com.smartling.samples.gettingstarted;
+
 import com.smartling.api.files.v2.FilesApi;
 import com.smartling.api.files.v2.FilesApiFactory;
-import com.smartling.api.files.v2.pto.DownloadTranslationPTO;
-import com.smartling.api.files.v2.pto.RetrievalType;
+import com.smartling.api.files.v2.pto.FileType;
+import com.smartling.api.files.v2.pto.UploadFilePTO;
+import com.smartling.api.files.v2.pto.UploadFileResponse;
 import com.smartling.api.v2.authentication.AuthenticationApi;
 import com.smartling.api.v2.authentication.AuthenticationApiFactory;
 import com.smartling.api.v2.client.ClientFactory;
 import com.smartling.api.v2.client.DefaultClientConfiguration;
 import com.smartling.api.v2.client.auth.Authenticator;
 import com.smartling.api.v2.client.auth.BearerAuthSecretFilter;
-
 import com.smartling.api.v2.client.exception.RestApiRuntimeException;
-import org.apache.commons.io.IOUtils;
-import java.io.InputStream;
-import static java.nio.charset.StandardCharsets.UTF_8;
 
-public class DownloadPseudo
+import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class Upload
 {
+    private static final List<String> locales = new ArrayList<>(Arrays.asList("fr-FR"));
+
     public static void main( String[] args ) throws Exception
     {
         // Read command-line arguments
         if (args.length != 2) {
-            System.out.println("Usage: mvn -X exec:java -Dexec.mainClass=\"DownloadPseudo\" -Dexec.args=\"<fileUri> <localeId>\"");
-            System.out.println("E.g.: mvn -X exec:java -Dexec.mainClass=\"DownloadPseudo\" -Dexec.args=\"strings.json fr-FR\"");
-            System.out.println("Takes two command-line parameters: ");
-            System.out.println("  fileUri: URI in Smartling of the file to be downloaded");
-            System.out.println("  localeId: any locale ID that is defined in the Smartling project");
+            System.out.println("Usage: mvn -q exec:java@upload");
+            System.out.println("(See pom.xml to configure parameters.)");
             System.exit(1);
         }
-        String fileUri = args[0];
-        String localeId = args[1];
+        String fileName = args[0];
+        String fileType = args[1];
 
         // Read authentication credentials from environment
         String userId = System.getenv("DEV_USER_IDENTIFIER");
@@ -52,19 +55,18 @@ public class DownloadPseudo
             .buildApi(new BearerAuthSecretFilter(authenticator), clientConfiguration);
 
         // Build the API request
-        DownloadTranslationPTO downloadTranslationPTO = DownloadTranslationPTO.builder()
-            .fileUri(fileUri)
-            .retrievalType(RetrievalType.PSEUDO)
+        UploadFilePTO uploadFilePto = UploadFilePTO.builder()
+            .file(new FileInputStream(fileName))
+            .fileUri(fileName)
+            .fileType(FileType.lookup(fileType))
             .build();
 
-        // Execute the download
+        // Execute the upload
         try {
-            InputStream translatedFile = filesApi.downloadTranslatedFile(projectId, localeId, downloadTranslationPTO);
-            System.out.println("\nContents of downloaded file: \n");
-            System.out.println(IOUtils.toString(translatedFile, UTF_8.name()));
-            // todo: write to file (is this stream fully in memory or potentially still being downloaded?
-        } catch  (RestApiRuntimeException e) {
-            System.out.println(e.getMessage());
+            UploadFileResponse uploadFileResponse = filesApi.uploadFile(projectId, uploadFilePto);
+            System.out.println(uploadFileResponse);
+        } catch (RestApiRuntimeException e) {
+            System.err.println(e.getMessage());
         }
     }
 
