@@ -61,11 +61,16 @@ public class DownloadPseudo
         // Execute the download
         try {
             InputStream translatedFile = filesApi.downloadTranslatedFile(projectId, localeId, downloadTranslationPTO);
+            System.out.println();
             System.out.println("Downloaded file: " + outputFileName);
+            System.out.println();
             File outputFile = new File(outputFileName);
             FileUtils.copyInputStreamToFile(translatedFile, outputFile);
         } catch  (RestApiRuntimeException e) {
+            System.err.println();
+            System.err.println("Download failed. Response details:");
             System.err.println(e.getMessage());
+            System.err.println();
         }
     }
 

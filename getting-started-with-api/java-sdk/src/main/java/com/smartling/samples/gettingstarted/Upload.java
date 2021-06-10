@@ -64,9 +64,15 @@ public class Upload
         // Execute the upload
         try {
             UploadFileResponse uploadFileResponse = filesApi.uploadFile(projectId, uploadFilePto);
+            System.out.println();
+            System.out.println("Uploaded file. Upload response details:");
             System.out.println(uploadFileResponse);
+            System.out.println();
         } catch (RestApiRuntimeException e) {
+            System.err.println();
+            System.err.println("Upload failed. Response details:");
             System.err.println(e.getMessage());
+            System.err.println();
         }
     }
 
