@@ -43,7 +43,7 @@ If modifying the example to use different file types, the list of valid file-typ
 
 To see your uploaded file in Smartling, log in to Smartling at [https://dashboard.smartling.com](https://dashboard.smartling.com), navigate to your test project, then click on the Files tab.
 
-### DownloadPseudo
+### Download Pseudo
 Downloads a pseudotranslated file from Smartling, taking the file URI (which will be the file name if the Upload sample was used to upload) as the first argument, the name to be used for the downloaded file as the second argument, and any valid locale code from the project as the third argument. The command-line arguments are configured in the pom.xml file and can be modified as needed there. To compile and run the sample, enter the following commands in at terminal at the location where the pom.xml file is.
 ```
 mvn compile
