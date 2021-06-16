@@ -10,7 +10,7 @@ Sample scripts illustrating the various ways to associate HTML context with stri
 The scripts are listed in order of increasing control of the matching process. Which script is appropriate for a given situation depends on a number of factors touched on below.
 
 ## Test files
-Test files containing translatable content in JSON format and an HTML context file for each script are provided in the associated subdirectories. A separate script, **upload-test-files.py**, is provided to upload the translatable content, add it to a job and authorize the job. This script must be run first with the appropriate parameters bere each of the matching and binding scripts:
+Test files containing translatable content in JSON format and an HTML context file for each script are provided in the associated subdirectories. A separate script, **upload-test-files.py**, is provided to upload the translatable content, add it to a job and authorize the job. This script must be run first with the appropriate parameters before each of the matching and binding scripts:
 
 ```
 python3 upload-test-files.py <subdirectory> <locale-id>
@@ -76,7 +76,7 @@ If you need to run the scripts multiple times, for example due to changes or pro
 
 ### match-all.py
 
-This script initiates a matching process in which any string in the project that doesn't already have context, and is also found in the uploaded HTML context file, is bound to this uploaded context. To illustrate this, two separate test files are uploaded first, each containing the same content; the context gets bound to the strings in both files.
+This script initiates a matching process in which any string in the project that doesn't already have context, and is found in the uploaded HTML context file, is bound to this uploaded context. To illustrate this, two separate test files are uploaded first, each containing the same content; the context gets bound to the strings in both files.
 
 To run it (assuming fr-FR is a valid locale in the project):
 
@@ -91,7 +91,7 @@ This is the simplest matching approach, but it runs the risk of matching context
 
 ### match-file-uri.py
 
-This script initiates a matching process in which any string from the specified file URI that doesn't already have context and is also in the uploaded HTML context file, is bound to the uploaded context. To illustrate this, two separate test files are uploaded, each containing the same content; only strings from one of the files gets context.
+This script initiates a matching process in which any string from the specified file URI that doesn't already have context and is in the uploaded HTML context file, is bound to the uploaded context. To illustrate this, two separate test files are uploaded, each containing the same content; only strings from one of the files gets context.
 
 To run it (assuming fr-FR is a valid locale in the project):
 
@@ -117,10 +117,10 @@ python3 match-strings.py
 
 When you review the results in the CAT Tool (see *Checking the results* above), you should see that only two of the four strings—the two whose keys start with 'topic.1' as specified in the script—have been bound to the uploaded context. The other two strings will have no visual context.
 
-This approach may be suitable when all the content is in a single file, or small number of files, such that limiting the matching by URI is not specific enough; instead it has to be done by individual strings. As this needs to be specified by hashcode, this script makes an additional API call to get the hashcodes of the uploaded strings, and then filters that list based on the keys of the strings (which are also returned in the same call).
+This approach may be suitable when all the content is in a single file, or small number of files, such that limiting the matching by URI is not specific enough and thus it has to be done by individual string. As this needs to be specified by hashcode, this script makes an additional API call to get the hashcodes of the uploaded strings, then it filters that list based on the keys of the strings (which are also returned in the same call).
 
 #### Repeated strings in the context
-You may have noticed that the string 'Topic name', which appears in two places in the context file, has been highlighted in both places in the context view in the CAT Tool. This is the standard behavior of context, i.e., that all copies of a string within a context file are bound to that translatable string in the project. The method used in the next script allows you to override this behavior.
+You may have noticed that the string 'Topic name', which appears in two places in the context file, has been highlighted in both places in the context view in the CAT Tool. This is the standard behavior of context, i.e., that all copies of a string within a context file are bound to that translatable string in the project. The method used in the next script allows you to override this behavior and choose precisely which string to match.
 
 
 ### bind-explicitly.py
@@ -136,4 +136,4 @@ python3 bind-explicitly.py
 
 When you review the results in the CAT Tool (see *Checking the results* above), you should see that only two of the four strings—the two whose keys start with 'topic.1' as specified in the script—have been bound to the uploaded context. The other two strings will have no visual context. In addition, and in contrast with the previous examples, only one instance of the string 'Topic name' is highlighted in the context pane of the CAT Tool.
 
-This approach allows precise control over which strings in the context file are bound to which strings in the project. It may be suitable when the same string appears in multiple places in the context file, and the correct one must be chosen. However, it requires the addition of the `data-sl-anchor` attributes to the context file. This may be simple to do if the context integration process is responsible for generating the context HTML files. On the other hand, if the context files are being extracted from a different system, such as a website, it might be more difficult to achieve. In the example, the attribute was set to the key of the string, but this is not required as long as some mapping exists between the value of the attribute and the string in Smartling.
+The explicit-binding approach allows precise control over which strings in the context file are bound to which strings in the project. It may be suitable when the same string appears in multiple places in the context file, and the correct one must be chosen. However, it requires the addition of the `data-sl-anchor` attributes to the context file. This may be simple to do if the context integration process is responsible for generating the context HTML files. On the other hand, if the context files are being extracted from a different system, such as a website, it might be more difficult to achieve. In the example, the attribute was set to the key of the string, but this is not required as long as some mapping exists between the value of the attribute and the string in Smartling.
