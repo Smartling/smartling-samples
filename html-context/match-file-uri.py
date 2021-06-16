@@ -38,8 +38,7 @@ def main():
 
     # Upload context
     print('Uploading context')
-    base_url = 'https://api.smartling.com/context-api/v2/projects/'
-    url = base_url + project_id + '/contexts'
+    url = 'https://api.smartling.com/context-api/v2/projects/{0}/contexts'.format(project_id)
     headers = {'Authorization': 'Bearer ' + access_token}
     params = {
         'name': CONTEXT_FILE_NAME
@@ -55,7 +54,7 @@ def main():
                         data = params,
                         files = multipart_request_data)
 
-    if resp.status_code not in [200, 202]:
+    if resp.status_code != 200:
         print(resp.status_code)
         print(resp.text)
         sys.exit()
@@ -66,8 +65,7 @@ def main():
 
     # Match context to any strings in the specified file URI
     print('Matching context restricted by file URI...')
-    base_url = 'https://api.smartling.com/context-api/v2/projects/' 
-    url = base_url + project_id + '/contexts/' + context_uid + '/match/async'
+    url = 'https://api.smartling.com/context-api/v2/projects/{0}/contexts/{1}/match/async'.format(project_id, context_uid)
     headers = {'Authorization': 'Bearer ' + access_token}
     params = {
         'contentFileUri': CONTENT_FILE_URI

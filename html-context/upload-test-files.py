@@ -7,7 +7,7 @@ import requests
 def main():
     # Read command-line arguments
     if len(sys.argv) != 3:
-        print('Usage: python3 upload-test-files <directory-name> <locale_id>')
+        print('Usage: python3 upload-test-files.py <directory-name> <locale_id>')
         print(' uploads JSON test files in <directory> and adds them to a job named <directory>')
         print(' <locale_id> must be for a language that exists in the test project')
         sys.exit()
@@ -53,7 +53,7 @@ def main():
     # Create job
     print('Creating job...')
     job_name = directory
-    url = 'https://api.smartling.com/jobs-api/v3/projects/' + project_id + '/jobs'
+    url = 'https://api.smartling.com/jobs-api/v3/projects/{0}/jobs'.format(project_id)
     headers = {'Authorization': 'Bearer ' + access_token}
     params = {
         'jobName': job_name
@@ -72,7 +72,7 @@ def main():
     
     # Create job batch
     print('Creating job batch...')
-    url = 'https://api.smartling.com/job-batches-api/v2/projects/' + project_id + '/batches'
+    url = 'https://api.smartling.com/job-batches-api/v2/projects/{0}/batches'.format(project_id)
     headers = {'Authorization': 'Bearer ' + access_token}
     params = {
         'authorize': True,
@@ -93,7 +93,7 @@ def main():
 
     # Upload test files
     print('Uploading test files to job batch...')
-    url = 'https://api.smartling.com/job-batches-api/v2/projects/' + project_id + '/batches/' + batch_uid + '/file'
+    url = 'https://api.smartling.com/job-batches-api/v2/projects/{0}/batches/{1}/file'.format(project_id, batch_uid)
     headers = {'Authorization': 'Bearer ' + access_token}
 
     for file_name in test_files:

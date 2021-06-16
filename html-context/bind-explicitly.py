@@ -39,8 +39,7 @@ def main():
 
     # Upload context
     print('Uploading context')
-    base_url = 'https://api.smartling.com/context-api/v2/projects/'
-    url = base_url + project_id + '/contexts'
+    url = 'https://api.smartling.com/context-api/v2/projects/{0}/contexts'.format(project_id)
     headers = {'Authorization': 'Bearer ' + access_token}
     params = {
         'name': CONTEXT_FILE_NAME
@@ -56,7 +55,7 @@ def main():
                         data = params,
                         files = multipart_request_data)
 
-    if resp.status_code not in [200, 202]:
+    if resp.status_code != 200:
         print(resp.status_code)
         print(resp.text)
         sys.exit()
@@ -67,15 +66,14 @@ def main():
 
     # Download strings from the uploaded file in order to get hashcodes
     print('Getting strings from uploaded file...')
-    base_url = 'https://api.smartling.com/strings-api/v2/projects/'
-    url = base_url + project_id + '/source-strings'
+    url = 'https://api.smartling.com/strings-api/v2/projects/{0}/source-strings'.format(project_id)
     headers = {'Authorization': 'Bearer ' + access_token}
     params = {
         'fileUri': STRINGS_FILE_URI
     }
     resp = requests.get(url, headers = headers, params = params)
 
-    if resp.status_code not in [200, 202]:
+    if resp.status_code != 200:
         print(resp.status_code)
         print(resp.text)
         sys.exit()
@@ -108,14 +106,13 @@ def main():
 
     # Bind strings to context elements explicitly
     print('Binding strings to context elements explicitly...')
-    base_url = 'https://api.smartling.com/context-api/v2/projects/'
-    url = base_url + project_id + '/bindings'
+    url = 'https://api.smartling.com/context-api/v2/projects/{0}/bindings'.format(project_id)
     headers = {'Authorization': 'Bearer ' + access_token}
     payload = {'bindings': bindings}
 
     r = requests.post(url, headers=headers, json=payload)
 
-    if resp.status_code not in [200, 202]:
+    if resp.status_code != 200:
         print(resp.status_code)
         print(resp.text)
         sys.exit()
