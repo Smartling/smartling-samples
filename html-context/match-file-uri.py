@@ -9,6 +9,11 @@ CONTENT_FILE_URI = 'uri-test-files/strings2.json'
 
 def main():
     
+    # Check commandline arguments
+    if len(sys.argv) != 1:
+        print('No arguments required')
+        sys.exit()
+        
     # Read authentication credentials from environment
     user_id = os.environ.get('DEV_USER_IDENTIFIER')
     user_secret = os.environ.get('DEV_USER_SECRET')
@@ -42,13 +47,13 @@ def main():
     headers = {'Authorization': 'Bearer ' + access_token}
     params = {
         'name': CONTEXT_FILE_NAME
-    }
+        }
     multipart_request_data = {
         'content': (CONTEXT_FILE_NAME, 
                     open(CONTEXT_FILE_NAME, 'rb'), 
                     'text/html', 
                     {'Expires': '0'})
-    }
+        }
     resp = requests.post(url,
                         headers = headers,
                         data = params,
@@ -64,12 +69,12 @@ def main():
 
 
     # Match context to any strings in the specified file URI
-    print('Matching context restricted by file URI...')
+    print('Initiating matching process restricted by file URI...')
     url = 'https://api.smartling.com/context-api/v2/projects/{0}/contexts/{1}/match/async'.format(project_id, context_uid)
     headers = {'Authorization': 'Bearer ' + access_token}
     params = {
         'contentFileUri': CONTENT_FILE_URI
-    }
+        }
     resp = requests.post(url,
                         headers = headers,
                         json = params)
@@ -79,7 +84,7 @@ def main():
         print(resp.text)
         sys.exit()
 
-    print('Context matching iniated')
+    print('Matching process initiated.')
 
 
 

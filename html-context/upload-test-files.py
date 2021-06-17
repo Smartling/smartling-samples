@@ -57,7 +57,7 @@ def main():
     headers = {'Authorization': 'Bearer ' + access_token}
     params = {
         'jobName': job_name
-    }
+        }
     resp = requests.post(url,
                          headers=headers,
                          json=params)
@@ -78,7 +78,7 @@ def main():
         'authorize': True,
         'translationJobUid': job_uid,
         'fileUris': test_files
-    }
+        }
     resp = requests.post(url,
                          headers=headers,
                          json=params)
@@ -102,10 +102,10 @@ def main():
             'fileUri': file_uri,
             'fileType': 'json',
             'localeIdsToAuthorize[]': [locale_id]
-        }
+            }
         file_param = {
             'file': open(file_name, 'rb')
-        }
+            }
         resp = requests.post(url,
                              headers=headers,
                              data=params,
