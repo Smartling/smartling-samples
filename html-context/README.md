@@ -67,12 +67,12 @@ After each of the script pairs below is run, a new job is created in Smartling a
 1. Log in to Smartling at [https://dashboard.smartling.com](https://dashboard.smartling.com) and navigate to your test project
 2. Click on the project *Jobs* tab (next to the *Summary* tab)
 3. Click on the first job listed
-4. Click the three dots under *Actions* on the right, and select *Edit in CAT Tool*
+4. Click the three dots under *Actions* on the right, and select *Edit in CAT Tool*. (You might need to wait a few seconds until the job is authorized and 'in progress' before doing this.)
 5. Move the cursor between the translatable strings to see the context for each string. You can check the *Additional Details* section in the upper right to see the file URI and other information.
 
 ## Running the scripts
 
-If you need to run the scripts multiple times, for example due to changes or problems, it might be necessary to delete the jobs and/or context from Smartling between runs. This can be done in the Smartling dashboard. The upload-test-files.py script will fail if an job already exists with the same name.
+If you need to run the scripts multiple times, for example due to changes or problems, it might be necessary to cancel and delete the jobs and/or context from Smartling between runs. This can be done in the Smartling dashboard. The upload-test-files.py script will fail if an job already exists with the same name.
 
 ### match-all.py
 
@@ -134,6 +134,6 @@ python3 upload-test-files.py binding-test-files fr-FR
 python3 bind-explicitly.py
 ```
 
-When you review the results in the CAT Tool (see *Checking the results* above), you should see that only two of the four strings—the two whose keys start with 'topic.1' as specified in the script—have been bound to the uploaded context. The other two strings will have no visual context. In addition, and in contrast with the previous examples, only one instance of the string 'Topic name' is highlighted in the context pane of the CAT Tool.
+When you review the results in the CAT Tool (see *Checking the results* above), you should see that the strings whose keys start with 'topic.1' or 'meta.1' as specified in the script—have been bound to the uploaded context. The other strings will have no visual context. In addition, and in contrast with the previous examples, only one instance of the string 'Topic name' is highlighted in the context pane of the CAT Tool.
 
-The explicit-binding approach allows precise control over which strings in the context file are bound to which strings in the project. It may be suitable when the same string appears in multiple places in the context file, and the correct one must be chosen. However, it requires the addition of the `data-sl-anchor` attributes to the context file. This may be simple to do if the context integration process is responsible for generating the context HTML files. On the other hand, if the context files are being extracted from a different system, such as a website, it might be more difficult to achieve. In the example, the attribute was set to the key of the string, but this is not required as long as some mapping exists between the value of the attribute and the string in Smartling.
+The explicit-binding approach allows precise control over which strings in the context file are bound to which strings in the project. It may be suitable when the same string appears in multiple places in the context file, and the correct one must be chosen. However, it requires the addition of the `data-sl-anchor` attributes to the context file. This may be simple to do if the context integration process is responsible for generating the context HTML files. On the other hand, if the context files are being extracted from a different system, such as a website, it might be more difficult to achieve. The `data-sl-anchor` attribute is used for sorting strings in the translation interface, so that translators can work on them in the order that they appear in the context. Therefore it's important to set this attribute to an integer value, and to maintain a mapping between this value and the string key.

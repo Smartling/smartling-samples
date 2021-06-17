@@ -9,6 +9,11 @@ STRINGS_FILE_URI = 'binding-test-files/strings.json'
 
 def main():
 
+    # Check commandline arguments
+    if len(sys.argv) != 1:
+        print('No arguments required')
+        sys.exit()
+        
     # Read authentication credentials from environment
     user_id = os.environ.get('DEV_USER_IDENTIFIER')
     user_secret = os.environ.get('DEV_USER_SECRET')
@@ -43,17 +48,17 @@ def main():
     headers = {'Authorization': 'Bearer ' + access_token}
     params = {
         'name': CONTEXT_FILE_NAME
-    }
+        }
     multipart_request_data = {
-        'content': (CONTEXT_FILE_NAME,
-                    open(CONTEXT_FILE_NAME, 'rb'),
-                    'text/html',
+    	'content': (CONTEXT_FILE_NAME,  
+                    open(CONTEXT_FILE_NAME, 'rb'), 
+                    'text/html', 
                     {'Expires': '0'})
-    }
+        }
     resp = requests.post(url,
-                        headers = headers,
-                        data = params,
-                        files = multipart_request_data)
+                         headers = headers,
+                         data = params,
+                         files = multipart_request_data)
 
     if resp.status_code != 200:
         print(resp.status_code)
@@ -70,7 +75,7 @@ def main():
     headers = {'Authorization': 'Bearer ' + access_token}
     params = {
         'fileUri': STRINGS_FILE_URI
-    }
+        }
     resp = requests.get(url, headers = headers, params = params)
 
     if resp.status_code != 200:
@@ -82,30 +87,60 @@ def main():
     print('Got strings.')
 
 
-    # Create context bindings between string hashcodes and corresponding
-    # data-sl-anchor values in the context file. In this example, the string
-    # keys are used for the anchor values in the context file, but they don't
-    # have to be: there just needs to be some way to map between the
-    # data-sl-anchor values and the keys, so that the right bindings are set
-    # up. The insertion of data-sl-anchor attributes into the context html
-    # file can be done as part of the context file generation process.
+    # Associate specific strings in the project with the uploaded context by 
+    # creating 'bindings' between the project string (identified by hashcode) and 
+    # the corresponding string in the context HTML (identified by the value of the
+    # data-sl-anchor attribute).
+    # It's important to use ordered integers for the data-sl-anchor values because
+    # the values are used to sort the translatable content in the translation interface
+    # allowing translators to work on the content in the same order as it appears in the 
+    # context. 
+    # For this example, the values are hard-coded in the sample context HTML and
+    # a mapping between those values and the string keys is hardcoded below. In 
+    # a production implementation, these values and mappings would likely be 
+    # constructed on the fly as part of the process of generating the context HTML.
+    key_to_anchor_mappings = {
+        'topic.1.name': '0',
+        'topic.1.description': '1'
+        }
+
     bindings = []
     for s in strings_from_uploaded_files:
         key = s['keys'][0]['key']
-        if key.startswith('topic.1'): # restrict this context to topic.1 strings
-            bindings.append({
+
+        # Bind this context to 'topic.1' strings for this example
+        if key.startswith('topic.1'): 
+            bindings.append(
+                {
                     'contextUid': context_uid,
                     'stringHashcode': s['hashcode'],
                     'selector': {
-                        # expects that an element in the context HTML file has
-                        # a data-sl-anchor tag set to the key of this string
-                        'anchors': [s['keys'][0]['key']]
+                        'anchors': [key_to_anchor_mappings[key]]
                     }
-                })
-    #print bindings
+                }
+            )
 
-    # Bind strings to context elements explicitly
-    print('Binding strings to context elements explicitly...')
+        # It's also possible to bind a project string to context without specifying
+        # a specific string in the context. This causes the context to display in
+        # the translation interface without any string being highlighted in it.
+        # This might be appropriate when the string is not visible, such as with
+        # certain HTML metadata, or perhaps if the location of the string in the 
+        # context is unknown.
+        elif key.startswith('meta.1'):
+            bindings.append({
+                    'contextUid': context_uid,
+                    'stringHashcode': s['hashcode']
+                    # no 'selector' node
+                })
+
+        else:
+            pass # string is not associated with this context
+
+    print('Created bindings: ')
+    print(json.dumps(bindings, indent=2))
+
+    # Load the bindings into Smartling
+    print('Uploading bindings...')
     url = 'https://api.smartling.com/context-api/v2/projects/{0}/bindings'.format(project_id)
     headers = {'Authorization': 'Bearer ' + access_token}
     payload = {'bindings': bindings}
@@ -117,7 +152,7 @@ def main():
         print(resp.text)
         sys.exit()
 
-    print('Binding initiated.')
+    print('Bindings uploaded; binding process initiated.')
 
 
 if __name__ == '__main__':
