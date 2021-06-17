@@ -7,7 +7,12 @@ import requests
 CONTEXT_FILE_NAME = 'match-all-test-files/context.html'
 
 def main():
-    
+
+    # Check commandline arguments
+    if len(sys.argv) != 1:
+        print('No arguments required')
+        sys.exit()
+        
     # Read authentication credentials from environment
     user_id = os.environ.get('DEV_USER_IDENTIFIER')
     user_secret = os.environ.get('DEV_USER_SECRET')
@@ -41,16 +46,16 @@ def main():
     url = 'https://api.smartling.com/context-api/v2/projects/{0}/contexts'.format(project_id)
     headers = {
         'Authorization': 'Bearer ' + access_token
-    }
+        }
     params = {
         'name': CONTEXT_FILE_NAME
-    }
+        }
     multipart_request_data = {
-            'content': (CONTEXT_FILE_NAME, 
-                        open(CONTEXT_FILE_NAME, 'rb'), 
-                        'text/html', 
-                        {'Expires': '0'})
-    }
+        'content': (CONTEXT_FILE_NAME, 
+                    open(CONTEXT_FILE_NAME, 'rb'), 
+                    'text/html', 
+                    {'Expires': '0'})
+        }
     resp = requests.post(url,
                         headers = headers,
                         data = params,
@@ -66,7 +71,7 @@ def main():
 
 
     # Match context with any string in project
-    print('Matching...')
+    print('Initiating matching process...')
     url = 'https://api.smartling.com/context-api/v2/projects/{0}/contexts/{1}/match/async'.format(project_id, context_uid)
     headers = {'Authorization': 'Bearer ' + access_token}
     resp = requests.post(url, headers = headers, json={})
@@ -76,7 +81,7 @@ def main():
         print(resp.text)
         sys.exit()
 
-    print('Match iniated')
+    print('Match process initiated.')
 
 if __name__ == '__main__':
     main()
