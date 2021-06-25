@@ -27,9 +27,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 
@@ -65,34 +63,50 @@ public class ProcessJob
         // Create the authenticator to be used by subsequent API calls
         AuthenticationApi authenticationApi = new AuthenticationApiFactory(clientFactory).buildApi(clientConfiguration);
         Authenticator authenticator = new Authenticator(userId, userSecret, authenticationApi);
+        BearerAuthSecretFilter bearerAuthSecretFilter = new BearerAuthSecretFilter(authenticator);
+
+        // Instantiate the APIs we'll need
+        TranslationJobsApi jobsApi = new TranslationJobsApiFactory(clientFactory)
+                .buildApi(bearerAuthSecretFilter, clientConfiguration);
+        JobBatchesApi jobBatchesApi = new JobBatchesApiFactory(clientFactory)
+                .buildApi(bearerAuthSecretFilter, clientConfiguration);
+        FilesApi filesApi = new FilesApiFactory(clientFactory)
+                .buildApi(bearerAuthSecretFilter, clientConfiguration);
+
 
         try {
             System.out.println();
 
-            // create job
+            // Create job
             System.out.println("Calling 'create job' endpoint...");
-            TranslationJobsApi jobsApi = new TranslationJobsApiFactory(clientFactory)
-                    .buildApi(new BearerAuthSecretFilter(authenticator), clientConfiguration);
             String jobUid = createJob(jobsApi, projectId, jobName);
             System.out.println("Job created. Job ID: " + jobUid);
 
-            // create job batch
+            // Generate URIs for the test files
+            // For testing purposes, we're prepending the job ID to the file names to generate a unique
+            // URI for each run of the test, thus allowing the same file to be added to different jobs.
+            Map<String, String> urisByFilename = new HashMap<>();
+            for (String fileName : FILE_LIST) {
+                String uri = jobUid + "/" + fileName;
+                urisByFilename.put(fileName, uri);
+            }
+
+            // Create job batch
             System.out.println("Calling 'create job batch' endpoint...");
-            JobBatchesApi jobBatchesApi = new JobBatchesApiFactory(clientFactory)
-                    .buildApi(new BearerAuthSecretFilter(authenticator), clientConfiguration);
-            String batchUid = createJobBatch(jobBatchesApi, projectId, jobUid);
+            List<String> fileUris = new ArrayList<>(urisByFilename.values());
+            String batchUid = createJobBatch(jobBatchesApi, projectId, jobUid, fileUris);
             System.out.println("Job batch created. Batch ID: " + batchUid);
 
-            // add files to batch
+            // Add files to batch
             System.out.println("Calling 'upload file to batch' endpoint...");
             for (String fileName : FILE_LIST) {
-                String fileUri = getUriFromFileName(jobUid, fileName);
+                String fileUri = urisByFilename.get(fileName);
                 addFileToBatch(jobBatchesApi, projectId, batchUid, fileName, fileUri);
                 System.out.println("Added file " + fileName);
             }
             System.out.println("Finished adding files to batch");
 
-            // checking job status until complete
+            // Check job status until complete
             System.out.println("Will check job status every 10 seconds");
             int percentComplete = 0;
             do {
@@ -104,11 +118,9 @@ public class ProcessJob
             while (percentComplete < 100);
             System.out.println("Job is complete; downloading translated files...");
 
-            // download translated files
-            FilesApi filesApi = new FilesApiFactory(clientFactory)
-                    .buildApi(new BearerAuthSecretFilter(authenticator), clientConfiguration);
+            // Download translated files
             for (String fileName : FILE_LIST) {
-                String fileUri = getUriFromFileName(jobUid, fileName);
+                String fileUri = urisByFilename.get(fileName);
                 for (String locale : LOCALES) {
                     InputStream translations = downloadTranslatedFile(filesApi, projectId, fileUri, locale);
                     String outputFileName = getOutputFileName(fileName, locale);
@@ -138,12 +150,12 @@ public class ProcessJob
     }
 
 
-    public static String createJobBatch(JobBatchesApi jobBatchesApi, String projectId, String jobUid) throws RestApiRuntimeException
+    public static String createJobBatch(JobBatchesApi jobBatchesApi, String projectId, String jobUid, List fileUris) throws RestApiRuntimeException
     {
         CreateBatchRequestPTO requestBody = CreateBatchRequestPTO.builder()
                 .translationJobUid(jobUid)
                 .authorize(true)
-                .fileUris(getUris(jobUid)) // prepend jobUid to file URI to avoid confusion during testing
+                .fileUris(fileUris)
                 .build();
 
         CreateBatchResponsePTO response = jobBatchesApi.createBatch(projectId, requestBody);
@@ -181,18 +193,4 @@ public class ProcessJob
         return fileName.substring(0, dotIndex) + "_" + locale + fileName.substring(dotIndex);
     }
 
-
-    // For the test script, we're prepending the job ID to the file URIs, allowing the
-    // same file to be uploaded to different jobs, since URIs will be different.
-    static List getUris(String jobUid) {
-        List uris = new ArrayList();
-        for (String fileName : FILE_LIST) {
-            uris.add(getUriFromFileName(jobUid, fileName));
-        }
-        return uris;
-    }
-
-    static String getUriFromFileName(String jobUid, String fileName) {
-        return jobUid + "/" + fileName;
-    }
 }
