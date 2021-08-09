@@ -4,6 +4,6 @@ Sample code illustrating use of the Smartling APIs. See the Smartling [Developer
 
 Topic | Description
 --- | ---
-[**Getting Started with the API**](getting-started-with-api)| Scripts illustrating topics from  [Getting Started with the API](https://help.smartling.com/hc/en-us/articles/1260804661570-Getting-Started).
- [**Tutorial 1 - Translation with Jobs**](tutorial-1-translating-with-jobs) | Scripts illustrating topics from [Tutorial 1 - Translation Jobs and Workflows](https://help.smartling.com/hc/en-us/articles/1260804711510-Tutorial-1-Translation-Jobs-and-Workflows).
- [**HTML Context via API**](html-context) | Scripts illustrating how to associate HTML [visual context](https://help.smartling.com/hc/en-us/articles/360057484273-Overview-of-Visual-Context) with strings in Smartling using the [Context API](https://api-reference.smartling.com/#tag/Context).
+[**Getting Started with the API**](getting-started-with-api)| Scripts illustrating topics from  Getting Started with the API.
+ [**Tutorial 1 - Translation with Jobs**](tutorial-1-translating-with-jobs) | Scripts illustrating topics from Tutorial 1 - Translation Jobs and Workflows.
+ [**Visual Context**](visual-context) | Scripts illustrating how to associate visual context with strings in Smartling using the Context API.
