@@ -1,19 +1,22 @@
 import json
 import os
 import sys
+import time
 
 import requests
 
-STRINGS_FILE_URI = 'strings-test-files/strings.json'
-CONTEXT_FILE_NAME = 'strings-test-files/context.html'
+sys.path.insert(1, os.path.abspath('..')) # to allow us to load module from parent directory
+from context_common import authenticate, create_job_with_files
+
+CONTEXT_FILE_NAME = 'html-match-strings-context.html'
+CONTENT_FILES = ['html-match-strings-contentfile1.json']
+STRINGS_FILE_URI = CONTENT_FILES[0] # first file - will use file name as URI
+JOB_NAME = 'html-match-strings'
+LOCALE_IDS = ['fr-FR']
+AUTHORIZE = True
 
 def main():
 
-    # Check commandline arguments
-    if len(sys.argv) != 1:
-        print('No arguments required')
-        sys.exit()
-        
     # Read authentication credentials from environment
     user_id = os.environ.get('DEV_USER_IDENTIFIER')
     user_secret = os.environ.get('DEV_USER_SECRET')
@@ -23,24 +26,9 @@ def main():
         print('Missing environment variables. Did you run setenv?')
         sys.exit()
 
+    access_token = authenticate(user_id, user_secret)
 
-    # Authenticate
-    print('Calling authentication endpoint...')
-    url = 'https://api.smartling.com/auth-api/v2/authenticate'
-    params = {
-        'userIdentifier': user_id,
-        'userSecret': user_secret
-        }
-    resp = requests.post(url, json = params)
-    if resp.status_code != 200:
-        print(resp.status_code)
-        print(resp.text)
-        sys.exit()
-
-    # Store access token for use in subsequent API calls
-    access_token = resp.json()['response']['data']['accessToken']
-    print('Authenticated.')
-
+    create_job_with_files(access_token, project_id, JOB_NAME, CONTENT_FILES, LOCALE_IDS, AUTHORIZE)
 
     # Upload context
     print('Uploading context...')
@@ -110,8 +98,33 @@ def main():
         print(resp.text)
         sys.exit()
 
-    print('Context matching initiated.')
+    match_id = resp.json()['response']['data']['matchId']
 
+    # Check matching progress
+    print('Context matching process initiated; checking match status...')
+    url = 'https://api.smartling.com/context-api/v2/projects/{0}/match/{1}'.format(project_id, match_id)
+    headers = {'Authorization': 'Bearer ' + access_token}
+    resp = requests.get(url, headers = headers)
+    if resp.status_code != 200:
+        print(resp.status_code)
+        print(resp.text)
+        sys.exit()
+
+    match_status = resp.json()['response']['data']['status']
+
+    while match_status != 'COMPLETED':
+        print('Waiting for matching to complete; status = ' + match_status)
+        time.sleep(5)
+        resp = requests.get(url, headers = headers)
+        if resp.status_code != 200:
+            print(resp.status_code)
+            print(resp.text)
+            sys.exit()
+        match_status = resp.json()['response']['data']['status']
+
+    bindings = resp.json()['response']['data']['bindings']
+    print('Matching completed. Number of matches: {0}'.format(len(bindings)))
+    print('Review results in the Dashboard')
 
 
 if __name__ == '__main__':

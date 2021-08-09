@@ -1,18 +1,22 @@
 import json
 import os
 import sys
+import time
 
 import requests
 
-CONTEXT_FILE_NAME = 'match-all-test-files/context.html'
+sys.path.insert(1, os.path.abspath('..')) # to allow us to load module from parent directory
+from context_common import authenticate, create_job_with_files
+
+CONTEXT_FILE_NAME = 'html-match-all-context.html'
+CONTENT_FILES = ['html-match-all-contentfile1.json', 
+                 'html-match-all-contentfile2.json']
+JOB_NAME = 'html-match-all'
+LOCALE_IDS = ['fr-FR']
+AUTHORIZE = True
 
 def main():
 
-    # Check commandline arguments
-    if len(sys.argv) != 1:
-        print('No arguments required')
-        sys.exit()
-        
     # Read authentication credentials from environment
     user_id = os.environ.get('DEV_USER_IDENTIFIER')
     user_secret = os.environ.get('DEV_USER_SECRET')
@@ -22,23 +26,9 @@ def main():
         print('Missing environment variables. Did you run setenv?')
         sys.exit()
 
+    access_token = authenticate(user_id, user_secret)
 
-    # Authenticate
-    print('Calling authentication endpoint...')
-    url = 'https://api.smartling.com/auth-api/v2/authenticate'
-    params = {
-        'userIdentifier': user_id,
-        'userSecret': user_secret
-        }
-    resp = requests.post(url, json = params)
-    if resp.status_code != 200:
-        print(resp.status_code)
-        print(resp.text)
-        sys.exit()
-
-    # Store access token for use in subsequent API calls
-    access_token = resp.json()['response']['data']['accessToken'] 
-    print('Authenticated.')
+    create_job_with_files(access_token, project_id, JOB_NAME, CONTENT_FILES, LOCALE_IDS, AUTHORIZE)
 
 
     # Upload context
@@ -53,8 +43,7 @@ def main():
     multipart_request_data = {
         'content': (CONTEXT_FILE_NAME, 
                     open(CONTEXT_FILE_NAME, 'rb'), 
-                    'text/html', 
-                    {'Expires': '0'})
+                    'text/html')
         }
     resp = requests.post(url,
                         headers = headers,
@@ -81,7 +70,34 @@ def main():
         print(resp.text)
         sys.exit()
 
-    print('Match process initiated.')
+    match_id = resp.json()['response']['data']['matchId']
+
+
+    # Check matching progress
+    print('Context matching process initiated; checking match status...')
+    url = 'https://api.smartling.com/context-api/v2/projects/{0}/match/{1}'.format(project_id, match_id)
+    headers = {'Authorization': 'Bearer ' + access_token}
+    resp = requests.get(url, headers = headers)
+    if resp.status_code != 200:
+        print(resp.status_code)
+        print(resp.text)
+        sys.exit()
+
+    match_status = resp.json()['response']['data']['status']
+
+    while match_status != 'COMPLETED':
+        print('Waiting for matching to complete; status = ' + match_status)
+        time.sleep(5)
+        resp = requests.get(url, headers = headers)
+        if resp.status_code != 200:
+            print(resp.status_code)
+            print(resp.text)
+            sys.exit()
+        match_status = resp.json()['response']['data']['status']
+
+    bindings = resp.json()['response']['data']['bindings']
+    print('Matching completed. Number of matches: {0}. Review results in Dashboard.'.format(len(bindings)))
+
 
 if __name__ == '__main__':
     main()

@@ -4,16 +4,18 @@ import sys
 
 import requests
 
-CONTEXT_FILE_NAME = 'binding-test-files/context.html'
-STRINGS_FILE_URI = 'binding-test-files/strings.json'
+sys.path.insert(1, os.path.abspath('..')) # to allow us to load module from parent directory
+from context_common import authenticate, create_job_with_files
+
+CONTEXT_FILE_NAME = 'html-explicit-binding-context.html'
+CONTENT_FILES = ['html-explicit-binding-contentfile1.json']
+STRINGS_FILE_URI = CONTENT_FILES[0] # first file - will use file name as URI
+JOB_NAME = 'html-explicit-binding'
+LOCALE_IDS = ['fr-FR']
+AUTHORIZE = True
 
 def main():
 
-    # Check commandline arguments
-    if len(sys.argv) != 1:
-        print('No arguments required')
-        sys.exit()
-        
     # Read authentication credentials from environment
     user_id = os.environ.get('DEV_USER_IDENTIFIER')
     user_secret = os.environ.get('DEV_USER_SECRET')
@@ -23,24 +25,9 @@ def main():
         print('Missing environment variables. Did you run setenv?')
         sys.exit()
 
+    access_token = authenticate(user_id, user_secret)
 
-    # Authenticate
-    print('Calling authentication endpoint...')
-    url = 'https://api.smartling.com/auth-api/v2/authenticate'
-    params = {
-        'userIdentifier': user_id,
-        'userSecret': user_secret
-        }
-    resp = requests.post(url, json = params)
-    if resp.status_code != 200:
-        print(resp.status_code)
-        print(resp.text)
-        sys.exit()
-
-    # Store access token for use in subsequent API calls
-    access_token = resp.json()['response']['data']['accessToken']
-    print('Authenticated.')
-
+    create_job_with_files(access_token, project_id, JOB_NAME, CONTENT_FILES, LOCALE_IDS, AUTHORIZE)
 
     # Upload context
     print('Uploading context')
@@ -52,8 +39,7 @@ def main():
     multipart_request_data = {
     	'content': (CONTEXT_FILE_NAME,  
                     open(CONTEXT_FILE_NAME, 'rb'), 
-                    'text/html', 
-                    {'Expires': '0'})
+                    'text/html')
         }
     resp = requests.post(url,
                          headers = headers,
@@ -136,7 +122,7 @@ def main():
         else:
             pass # string is not associated with this context
 
-    print('Created bindings: ')
+    print('Bindings to be uploaded: ')
     print(json.dumps(bindings, indent=2))
 
     # Load the bindings into Smartling
@@ -145,14 +131,16 @@ def main():
     headers = {'Authorization': 'Bearer ' + access_token}
     payload = {'bindings': bindings}
 
-    r = requests.post(url, headers=headers, json=payload)
+    resp = requests.post(url, headers=headers, json=payload)
 
     if resp.status_code != 200:
         print(resp.status_code)
         print(resp.text)
         sys.exit()
 
-    print('Bindings uploaded; binding process initiated.')
+    bindings_created = resp.json()['response']['data']['created']['totalCount']
+    print('Number of bindings created: {0}'.format(bindings_created))
+    print('Review results in the Dashboard')
 
 
 if __name__ == '__main__':
