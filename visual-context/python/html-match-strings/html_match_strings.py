@@ -40,8 +40,7 @@ def main():
     multipart_request_data = {
         'content': (CONTEXT_FILE_NAME,
                     open(CONTEXT_FILE_NAME, 'rb'),
-                    'text/html',
-                    {'Expires': '0'})
+                    'text/html')
         }
     resp = requests.post(url,
                          headers = headers,
