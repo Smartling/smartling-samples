@@ -15,6 +15,6 @@ It's also possible to combine steps 3 and 4 in a single API call.
 
 See subfolders below for the scripts:
 
-* [Python scripts][python]
+* [Python scripts](python)
 
 
