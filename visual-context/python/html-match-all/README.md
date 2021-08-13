@@ -6,8 +6,8 @@ This script initiates a matching process in which any string in the project that
 python3 html_match_all.py
 ```
 
-When you review the results in the CAT Tool (see *Checking the results* above), you should see that all four strings—two from each file—have been bound to the uploaded context.
+When you review the results in the CAT Tool (see [Checking the results](../README.md#checking-the-results)), you should see that all four strings—two from each file—have been bound to the uploaded context.
 
-This is the simplest matching approach, but it runs the risk of matching context to the wrong string in the project if the same string can appear multiple times in a project with different contexts. If that happens only rarely, then this approach may be sufficient.
+This is the simplest matching approach, but it runs the risk of matching context to the wrong string if the same string can appear multiple times in a project with different contexts. If that happens only rarely, then this approach may be sufficient.
 
 For additional information, see [Context API examples](../README.md)

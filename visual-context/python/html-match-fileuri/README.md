@@ -6,7 +6,7 @@ This script initiates a matching process in which any string from the specified 
 python3 html_match_file_uri.py
 ```
 
-When you review the results in the CAT Tool (see *Checking the results* above), you should see that only two of the four strings—the two from the file URI `html-match-fileuri-contentfile2.json` as specified in the script—have been bound to the uploaded context. The other two strings will have no visual context.
+When you review the results in the CAT Tool (see [Checking the results](../README.md#checking-the-results)), you should see that only two of the four strings—the two from the file URI `html-match-fileuri-contentfile2.json` as specified in the script—have been bound to the uploaded context. The other two strings will have no visual context.
 
 The approach used in this script suits situations where the content is split into separate files. For example, in the case of product content, if the information for each product is uploaded to Smartling in a separate file, then the corresponding context file could be uploaded and matched to the correct content file by URI.
 
