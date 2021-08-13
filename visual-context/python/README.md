@@ -42,9 +42,7 @@ After each of the script pairs below is run, a new job is created in Smartling a
 
 ## HTML context
 
-### Context HTML format
-
-The HTML context files used in these examples are simple and have images embedded inline using  `src="data:image/jpeg;base64,imagedata...` which makes them self-contained. It's also possible to use external links for images and other resources: as long as they're accessible over the internet, Smartling will load them in as part of the context processing process. And of course, more elaborate HTML context, reflecting a final rendered web page, can be used too.
+**Note:** The HTML context files used in these examples reference publicly hosted resources such as images and CSS. If it's not possible to make the context resources publicly accessible, then they can also be inlined (e.g., using  `src="data:image/jpeg;base64,imagedata...`) directly in the HTML file being uploaded. Alternatively, the IP address of Smartling's context loading service can be whitelisted restricting access to the images to requests from that server.
 
 * [HTML context for any project string](html-match-all)
 * [HTML context for any string in a specified file](html-match-fileuri)
