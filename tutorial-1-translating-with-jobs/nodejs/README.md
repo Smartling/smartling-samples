@@ -17,7 +17,9 @@ The code expects the following environment variables to be defined:
 * **DEV_USER_SECRET**. The user secret from your API token.
 
 ```
-npm run build && DEV_PROJECT_ID=<DEV_PROJECT_ID> DEV_USER_IDENTIFIER=<DEV_USER_IDENTIFIER> DEV_USER_SECRET=<DEV_USER_SECRET> node built/index.js
+npm install
+npm run build
+DEV_PROJECT_ID=<DEV_PROJECT_ID> DEV_USER_IDENTIFIER=<DEV_USER_IDENTIFIER> DEV_USER_SECRET=<DEV_USER_SECRET> node built/index.js
 ```
 
 Once the program starts checking the translation status, you will need to login to Smartling at [https://dashboard.smartling.com](https://dashboard.smartling.com), navigate to your test project, add translations, then submit them through the workflow. Once they are all in the Published workflow step, the program will download the completed translations. See the tutorial referenced above for details on this.
