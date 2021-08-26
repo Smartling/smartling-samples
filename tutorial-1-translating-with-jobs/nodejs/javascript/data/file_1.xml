@@ -2,6 +2,6 @@
 <!--smartling.translate_paths = root/strings/string-->
 <root>
     <strings>
-        <string>Test string #2</string>
+        <string>Test js string #1</string>
     </strings>
 </root>

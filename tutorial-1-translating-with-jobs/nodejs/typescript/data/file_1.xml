@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--smartling.translate_paths = root/strings/string-->
+<root>
+    <strings>
+        <string>Test ts string #1</string>
+    </strings>
+</root>
