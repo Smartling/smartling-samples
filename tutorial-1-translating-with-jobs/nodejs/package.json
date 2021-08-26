@@ -3,7 +3,7 @@
     "build": "tsc"
   },
   "dependencies": {
-    "smartling-api-sdk-nodejs": "Smartling/api-sdk-nodejs#CON-992-updated-jobs-api-client",
+    "smartling-api-sdk-nodejs": "^1.1.0",
     "typescript": "^4.3.5"
   }
 }
