@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "smartling-api-sdk-nodejs": "^1.1.0",
+    "typescript": "^4.3.5"
+  }
+}
