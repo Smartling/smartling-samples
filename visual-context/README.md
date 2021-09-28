@@ -28,10 +28,14 @@ It's also possible to combine steps 3 and 4 in a single API call.
 The following context types can be uploaded explicitly to Smartling via API:
 
 - **HTML.** Uploaded as an HTML file which can reference publicly accessible resources such as images, or can include these resources inline in the HTML file.
-- **Image.** These can be uploaded as image files, or as a video (or URL), from which images are extracted.
+- **Image.** These can be uploaded as image files, or as a video (or URL), from which images are extracted. 
 - **Video.** Video context is supported for subtitle content, such as SRT files.
 
 Smartling also supports 'implicit' context which is extracted from the content file itself, for example when an HTML file or Word document is uploaded for translations. These examples cover explicit context upload.
+
+## Matching strings to context
+
+In order to associate each string with the appropriate part of the context file, a matching process must be carried out. For HTML, this is based on matching the text to be translated with that found in the uploaded HTML context. For image context, OCR (optical character recognition) is performed to identify the value and location of text in the image, which is then associated with the text to be tranlated. For video context, the time stamps from the subtitle files are used to associate the strings to be translated with a particular point in the uploaded context video. The API provides funtionality to control this matching process in various ways, which are illustrated in the examples.
 
 ## Code examples
 
