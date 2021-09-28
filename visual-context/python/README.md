@@ -1,4 +1,4 @@
-# Context API examples
+# Context API Python examples
 
 Sample scripts illustrating the various ways to associate visual context with strings in Smartling using the [Context API](https://api-reference.smartling.com/#tag/Context).
 
@@ -15,7 +15,7 @@ If you need to run the scripts multiple times, for example due to changes or pro
 ## Set Up
 The scripts expect the following environment variables to be defined:
 
-* **DEV_PROJECT_ID**. The UID of the Smartling test project.
+* **DEV_PROJECT_ID**. The UID of the Smartling test project you're using.
 * **DEV_USER_IDENTIFIER**. The user identifier from your API token.
 * **DEV_USER_SECRET**. The user secret from your API token.
 
@@ -32,11 +32,11 @@ Windows
 
 ## Checking the results
 
-After each of the script pairs below is run, a new job is created in Smartling and authorized for translation. To see how context has been attached:
+After each of the scripts below is run, a new job is created in Smartling and authorized for translation. To see how context has been attached:
 
 1. Log in to Smartling at [https://dashboard.smartling.com](https://dashboard.smartling.com) and navigate to your test project
 2. Click on the project *Jobs* tab (next to the *Summary* tab)
-3. Click on the first job listed
+3. Click on the newly created job (should be listed first)
 4. Click the three dots under *Actions* on the right, and select *Edit in CAT Tool*. (You might need to wait a few seconds until the job is authorized and 'in progress' before doing this.)
 5. Move the cursor between the translatable strings to see the context for each string. You can check the *Additional Details* section in the upper right to see the file URI and other information.
 
