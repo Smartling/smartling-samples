@@ -5,7 +5,7 @@ This example initiates a matching process in which any string from the specified
 To run the example, enter the following in a terminal window:
 
 ```
-python3 images_from_vieo_match_file_uri.py
+python3 images_from_video_match_file_uri.py
 ```
 
 When you review the results in the CAT Tool (see [Checking the results](../README.md#checking-the-results)), you should see that each string has been matched with a separate image extracted from the video. If you check the Context tab, you should see four new image contexts.
