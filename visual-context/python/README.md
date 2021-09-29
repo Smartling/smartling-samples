@@ -40,7 +40,7 @@ After each of the scripts below is run, a new job is created in Smartling and au
 4. Click the three dots under *Actions* on the right, and select *Edit in CAT Tool*. (You might need to wait a few seconds until the job is authorized and 'in progress' before doing this.)
 5. Move the cursor between the translatable strings to see the context for each string. You can check the *Additional Details* section in the upper right to see the file URI and other information.
 
-## HTML context
+## HTML context examples
 
 **Note:** The HTML context files used in these examples reference publicly hosted resources such as images and CSS. If it's not possible to make the context resources publicly accessible, then they can also be inlined (e.g., using  `src="data:image/jpeg;base64,imagedata...`) directly in the HTML file being uploaded. Alternatively, the IP address of Smartling's context loading service can be whitelisted restricting access to the images to requests from that server.
 
@@ -49,3 +49,5 @@ After each of the scripts below is run, a new job is created in Smartling and au
 * [HTML context for any of a specified set of strings](html-match-strings)
 * [HTML context for specific strings with explicit binding](html-explicit-binding)
 
+## Image context examples
+* [Image context for any string in a specified file](image-match-fileuri)
