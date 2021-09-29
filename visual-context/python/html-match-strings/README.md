@@ -1,6 +1,6 @@
 ### HTML context for any of a specified set of strings
 
-This example initiates a matching process in which any string from the specified groups of strings that doesn't already have context and is also in the uploaded HTML context file, is bound to matching string in the uploaded context. To illustrate this, a single content file is uploaded containing the same strings multiple times but with different keys: only some of the strings get context.
+This example uses a matching process in which any string from the specified groups of strings that doesn't already have context and is also in the uploaded HTML context file, is bound to matching string in the uploaded context. To illustrate this, a single content file is uploaded containing the same strings multiple times but with different keys: only some of the strings get context.
 
 To run the example, enter the following in a terminal window:
 

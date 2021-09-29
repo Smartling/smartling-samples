@@ -1,6 +1,6 @@
 ## HTML context for any project string
 
-This example initiates a matching process in which any string in the project that doesn't already have context and is found in the uploaded HTML context file, is bound to matching strings in uploaded context. To illustrate this, two separate test files are uploaded first, each containing the same content: the context gets bound to the strings in both files.
+This example uses a matching process in which any string in the project that doesn't already have context and is found in the uploaded HTML context file, is bound to matching strings in uploaded context. To illustrate this, two separate test files are uploaded first, each containing the same content: the context gets bound to the strings in both files.
 
 To run the example, enter the following in a terminal window:
 

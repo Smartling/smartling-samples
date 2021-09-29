@@ -51,3 +51,6 @@ After each of the scripts below is run, a new job is created in Smartling and au
 
 ## Image context examples
 * [Image context for any string in a specified file](image-match-fileuri)
+
+## Video context examples
+* [Video context for subtitle files (SRT and VTT)](video-match-fileuri)

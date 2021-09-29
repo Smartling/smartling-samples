@@ -1,6 +1,6 @@
 ## Images-from-video context for any string in a specified file
 
-This example initiates a matching process in which any string from the specified file URI that doesn't already have context and is found via OCR in images extracted from an uploaded video, is bound to matching region of the extracted context image. To illustrate this, a test file containing four strings is uploaded, each one of which is visible at different points of the uploaded video file: four separate image contexts are extracted from the video, and each is matched with a separate string in the content to be translated.
+This example uses a matching process in which any string from the specified file URI that doesn't already have context and is found via OCR in images extracted from an uploaded video, is bound to matching region of the extracted context image. To illustrate this, a test file containing four strings is uploaded, each one of which is visible at different points of the uploaded video file: four separate image contexts are extracted from the video, and each is matched with a separate string in the content to be translated.
 
 To run the example, enter the following in a terminal window:
 

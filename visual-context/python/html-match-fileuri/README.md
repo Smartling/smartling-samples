@@ -1,6 +1,6 @@
 ## HTML context for any string in a specified file
 
-This example initiates a matching process in which any string from the specified file URI that doesn't already have context and is in the uploaded HTML context file, is bound to matching strings in the uploaded context. To illustrate this, two separate test files are uploaded, each containing the same content: only strings from one of the files gets context.
+This example uses a matching process in which any string from the specified file URI that doesn't already have context and is in the uploaded HTML context file, is bound to matching strings in the uploaded context. To illustrate this, two separate test files are uploaded, each containing the same content: only strings from one of the files gets context.
 
 To run the example, enter the following in a terminal window:
 
