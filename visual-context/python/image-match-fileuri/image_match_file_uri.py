@@ -97,7 +97,7 @@ def main():
         match_status = resp.json()['response']['data']['status']
 
     bindings = resp.json()['response']['data']['bindings']
-    print('Matching completed. Number of matches: {0}. Review results in Dashboard.'.format(len(bindings)))
+    print('Matching completed. Number of matches: {0}. \nReview results in Dashboard.'.format(len(bindings)))
 
 
 
