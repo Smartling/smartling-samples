@@ -1,6 +1,6 @@
 ## Image context for any string in a specified file
 
-This example initiates a matching process in which any string from the specified file URI that doesn't already have context and is found via OCR in the uploaded context image file, is bound to matching region of the context image. To illustrate this, a test files containing two strings is uploaded, only one of which is contained in the context file: only the string found in the context file gets context.
+This example initiates a matching process in which any string from the specified file URI that doesn't already have context and is found via OCR in the uploaded context image file, is bound to matching region of the context image. To illustrate this, a test file containing two strings is uploaded, only one of which is contained in the context file: only the string found in the context file gets context.
 
 To run the example, enter the following in a terminal window:
 
