@@ -1,0 +1,11 @@
+1
+00:00:00,300 --> 00:00:04,066
+The ocean covers more than 70% of the Earth's surface.
+
+2
+00:00:04,066 --> 00:00:07,566
+Reaching as far down as 36,000 feet in some places,
+
+3
+00:00:07,566 --> 00:00:11,100
+ the waters of our planet occupy a staggering volume.
