@@ -8,8 +8,8 @@ import requests
 sys.path.insert(1, os.path.abspath('..')) # to allow us to load module from parent directory
 from context_common import authenticate, create_job_with_files
 
-CONTEXT_FILE_NAME = 'video-match-fileuri-video1.mp4'
-CONTENT_FILE_NAME = 'video-match-fileuri-contentfile1.srt'
+CONTEXT_FILE_NAME = 'video1.mp4'
+CONTENT_FILE_NAME = 'video-subtitles.srt'
 JOB_NAME = 'video-match-fileuri'
 LOCALE_IDS = ['fr-FR']
 AUTHORIZE = True
