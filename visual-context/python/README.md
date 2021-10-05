@@ -45,12 +45,15 @@ After each of the scripts below is run, a new job is created in Smartling and au
 **Note:** The HTML context files used in these examples reference publicly hosted resources such as images and CSS. If it's not possible to make the context resources publicly accessible, then they can also be inlined (e.g., using  `src="data:image/jpeg;base64,imagedata...`) directly in the HTML file being uploaded. Alternatively, the IP address of Smartling's context loading service can be whitelisted restricting access to the images to requests from that server.
 
 * [HTML context for any project string](html-match-all)
-* [HTML context for any string in a specified file](html-match-fileuri)
+* [HTML context for any string in a specified content file](html-match-fileuri)
 * [HTML context for any of a specified set of strings](html-match-strings)
-* [HTML context for specific strings with explicit binding](html-explicit-binding)
+* [HTML context with explicit binding of content strings to context strings](html-explicit-binding)
 
 ## Image context examples
-* [Image context for any string in a specified file](image-match-fileuri)
+* [Image context for any string in a specified content file](image-match-fileuri)
+* [Image context extracted from video for any string in a specified content file](images-from-video-match-fileuri)
+* [Image context extracted from video URL for any string in a specified content file](images-from-vidurl-match-fileuri)
 
 ## Video context examples
 * [Video context for subtitle files (SRT and VTT)](video-match-fileuri)
+* [Video URL context for subtitle files (SRT and VTT)](vidurl-match-fileuri)
