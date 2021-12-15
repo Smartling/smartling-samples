@@ -2,6 +2,7 @@
 
 Scripts illustrating topics from [Tutorial 1 - Translation Jobs and Workflows](https://help.smartling.com/hc/en-us/articles/1260804711510-Tutorial-1-Translation-Jobs-and-Workflows).
 
-* [Python](python)
-* [Java](java)
-* [NodeJS](nodejs)
+* [Python (Requests)](python)
+* [Java SDK](java)
+* [Python SDK](pythonsdk)
+* [Node.js SDK](nodejs)
