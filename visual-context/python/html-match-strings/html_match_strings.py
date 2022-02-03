@@ -97,11 +97,11 @@ def main():
         print(resp.text)
         sys.exit()
 
-    match_id = resp.json()['response']['data']['matchId']
+    process_uid = resp.json()['response']['data']['processUid']
 
     # Check matching progress
-    print('Context matching process initiated; checking match status...')
-    url = 'https://api.smartling.com/context-api/v2/projects/{0}/match/{1}'.format(project_id, match_id)
+    print('Context matching process initiated; checking async process status...')
+    url = 'https://api.smartling.com/context-api/v2/projects/{0}/processes/{1}'.format(project_id, process_uid)
     headers = {'Authorization': 'Bearer ' + access_token}
     resp = requests.get(url, headers = headers)
     if resp.status_code != 200:
@@ -109,19 +109,19 @@ def main():
         print(resp.text)
         sys.exit()
 
-    match_status = resp.json()['response']['data']['status']
+    process_status = resp.json()['response']['data']['processState']
 
-    while match_status != 'COMPLETED':
-        print('Waiting for matching to complete; status = ' + match_status)
+    while process_status != 'COMPLETED':
+        print('Waiting for matching to complete; status = ' + process_status)
         time.sleep(5)
         resp = requests.get(url, headers = headers)
         if resp.status_code != 200:
             print(resp.status_code)
             print(resp.text)
             sys.exit()
-        match_status = resp.json()['response']['data']['status']
+        process_status = resp.json()['response']['data']['processState']
 
-    bindings = resp.json()['response']['data']['bindings']
+    bindings = resp.json()['response']['data']['result']['bindings']
     print('Matching completed. Number of matches: {0}'.format(len(bindings)))
     print('Review results in the Dashboard')
 
