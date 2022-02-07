@@ -97,7 +97,7 @@ def main():
             print(resp.status_code)
             print(resp.text)
             sys.exit()
-        process_status = resp.json()['response']['data']['status']
+        process_status = resp.json()['response']['data']['processState']
 
     bindings = resp.json()['response']['data']['result']['bindings']
     print('Matching completed. Number of matches: {0}'.format(len(bindings)))
